@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Specialite index{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Liste des Specialités</h1>
+
+    <a href="{{ path('app_specialite_new') }}" class="btn btn-primary mb-3">Ajouter un specialité</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for specialite in pagination %}
+            <tr>
+                <td>{{ specialite.id }}</td>
+                <td>{{ specialite.nom }}</td>
+                <td>
+                    <a href="{{ path('app_specialite_show', {'id': specialite.id}) }}" class="btn btn-sm btn-outline-info">Voir</a>
+                    <a href="{{ path('app_specialite_edit', {'id': specialite.id}) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <tr><td colspan="3">Aucun client trouvé.</td></tr>
+            </tr>
+        {% endfor %}
+
+        <!-- Pagination -->
+        <div class="mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        </tbody>
+    </table>
+
+{% endblock %}
+

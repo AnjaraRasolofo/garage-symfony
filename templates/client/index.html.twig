@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Liste des clients</h1>
+
+<a href="{{ path('app_client_new') }}" class="btn btn-primary mb-3">Ajouter un client</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    {% for client in pagination %}
+    <tr>
+        <td>{{ client.nom }}</td>
+        <td>{{ client.prenom }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.telephone }}</td>
+        <td>
+            <a href="{{ path('app_client_show', {id: client.id}) }}" class="btn btn-sm btn-outline-info">Voir</a>
+            <a href="{{ path('app_client_edit', {id: client.id}) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+        </td>
+    </tr>
+    {% else %}
+        <tr><td colspan="5">Aucun client trouvé.</td></tr>
+    {% endfor %}
+
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    
+    </tbody>
+</table>
+{% endblock %}

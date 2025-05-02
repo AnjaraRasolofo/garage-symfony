@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TacheReparation index{% endblock %}
+
+{% block body %}
+    <h1>TacheReparation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>DateDebut</th>
+                <th>DateFin</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tache_reparation in tache_reparations %}
+            <tr>
+                <td>{{ tache_reparation.id }}</td>
+                <td>{{ tache_reparation.description }}</td>
+                <td>{{ tache_reparation.status }}</td>
+                <td>{{ tache_reparation.dateDebut ? tache_reparation.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tache_reparation.dateFin ? tache_reparation.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_tache_reparation_show', {'id': tache_reparation.id}) }}">show</a>
+                    <a href="{{ path('app_tache_reparation_edit', {'id': tache_reparation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_tache_reparation_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Employe index{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Liste des Employés</h1>
+
+    <a href="{{ path('app_employe_new') }}" class="btn btn-primary">Ajouter un employé</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Telephone</th>
+                <th>Adresse</th>
+                <th>Poste</th>
+                <th>Date_embauche</th>
+                <th>Salaire</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for employe in pagination %}
+            <tr>
+                <td>{{ employe.id }}</td>
+                <td>{{ employe.nom }}</td>
+                <td>{{ employe.prenom }}</td>
+                <td>{{ employe.email }}</td>
+                <td>{{ employe.telephone }}</td>
+                <td>{{ employe.adresse }}</td>
+                <td>{{ employe.poste }}</td>
+                <td>{{ employe.dateEmbauche ? employe.dateEmbauche|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ employe.salaire }}</td>
+                <td>
+                    <a href="{{ path('app_employe_show', {'id': employe.id}) }}" class="btn btn-sm btn-outline-info">Voir</a>
+                    <a href="{{ path('app_employe_edit', {'id': employe.id}) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+
+        <!-- Pagination -->
+        <div class="mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        </tbody>
+    </table>
+
+{% endblock %}

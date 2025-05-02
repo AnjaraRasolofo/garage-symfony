@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Réparations{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🔧 Réparations</h2>
+        <a href="{{ path('app_reparation_new') }}" class="btn btn-success">➕ Nouvelle réparation</a>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Véhicule</th>
+                <th>Date prévue</th>
+                <th>Statut</th>
+                <th>Employés</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reparation in reparations %}
+                <tr>
+                    <td>{{ reparation.id }}</td>
+                    <td>{{ reparation.description|u.truncate(50, '...') }}</td>
+                    <td>
+                        {% if reparation.vehicule %}
+                            {{ reparation.vehicule.marque }} {{ reparation.vehicule.modele }}
+                        {% else %}
+                            <span class="text-muted">Non assigné</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ reparation.dateReparation ? reparation.dateReparation|date('d/m/Y') : '' }}</td>
+                    <td>
+                        {% set statut = reparation.status %}
+                        {% set badge_class = {
+                            'en_attente': 'warning',
+                            'en_cours': 'info',
+                            'termine': 'success'
+                        }[statut] ?? 'secondary' %}
+                        <span class="badge bg-{{ badge_class }}">{{ statut|title }}</span>
+                    </td>
+                    <td>
+                        {% for employe in reparation.employes %}
+                            <span class="badge bg-primary">{{ employe.nom }}</span>
+                        {% else %}
+                            <span class="text-muted">Aucun</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_reparation_show', {'id': reparation.id}) }}" class="btn btn-sm btn-outline-secondary">👁️</a>
+                        <a href="{{ path('app_reparation_edit', {'id': reparation.id}) }}" class="btn btn-sm btn-outline-primary">✏️</a>
+                        {#{{ include('_partials/_delete_form.html.twig', {'path': path('app_reparation_delete', {'id': reparation.id})}) }}#}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted">Aucune réparation trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un client{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Modifier le client</h1>
+
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+    <div class="col-md-6">
+        {{ form_row(form.nom) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.prenom) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.email) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.telephone) }}
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+    </div>
+{{ form_end(form) }}
+{% endblock %}
+
