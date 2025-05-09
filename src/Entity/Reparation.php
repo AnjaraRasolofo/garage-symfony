@@ -33,8 +33,8 @@ class Reparation
     private ?float $prix = null;
 
     #[ORM\ManyToMany(targetEntity: Employe::class, inversedBy: 'reparations')]
+    #[ORM\JoinTable(name: 'reparation_has_employe')]
     private Collection $employes;
-
     /**
      * @var Collection<int, TacheReparation>
      */

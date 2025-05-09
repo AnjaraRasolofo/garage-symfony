@@ -30,6 +30,9 @@ class Client
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $type = null;
+
     /**
      * @var Collection<int, Vehicule>
      */
@@ -102,6 +105,18 @@ class Client
     public function setAdresse(?string $adresse): static
     {
         $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

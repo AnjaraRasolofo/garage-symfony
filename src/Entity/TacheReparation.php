@@ -26,11 +26,11 @@ class TacheReparation
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateFin = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tacheReparations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Employe::class)]
+    #[ORM\JoinColumn(nullable: false)] 
     private ?Employe $employe = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tacheReparations')]
+    #[ORM\ManyToOne(targetEntity: Reparation::class, inversedBy: 'tacheReparations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Reparation $reparation = null;
 
