@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un client{% endblock %}
+{% block title %}GM | Client{% endblock %}
 
 {% block body %}
 <h1 class="mb-4">Modifier le client</h1>
@@ -18,9 +18,18 @@
     <div class="col-md-6">
         {{ form_row(form.telephone) }}
     </div>
+    <div class="col-md-9">
+        {{ form_row(form.adresse) }}
+    </div>
+    <div class="d-flex">
+        <a href="{{ path('app_client_index') }}" class="btn btn-secondary">Précedent</a>
 
-    <div class="col-12">
-        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <button type="submit" class="btn btn-success mx-2">Enregistrer</button>
+
+        <form method="post" action="{{ path('app_client_delete', {'id': client.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+            <button class="btn btn-danger">Supprimer</button>
+        </form>
     </div>
 {{ form_end(form) }}
 {% endblock %}

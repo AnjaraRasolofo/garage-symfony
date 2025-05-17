@@ -24,7 +24,7 @@ class Reparation
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_reparation = null;
+    private ?\DateTimeInterface $dateReparation = null;
 
     #[ORM\Column(length: 50)]
     private ?string $status = null;
@@ -78,12 +78,12 @@ class Reparation
 
     public function getDateReparation(): ?\DateTimeInterface
     {
-        return $this->date_reparation;
+        return $this->dateReparation;
     }
 
-    public function setDateReparation(\DateTimeInterface $date_reparation): static
+    public function setDateReparation(\DateTimeInterface $dateReparation): static
     {
-        $this->date_reparation = $date_reparation;
+        $this->dateReparation = $dateReparation;
 
         return $this;
     }

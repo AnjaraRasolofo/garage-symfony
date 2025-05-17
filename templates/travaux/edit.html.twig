@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une tache{% endblock %}
+
+{% block body %}
+    <h1>Modifier une tache</h1>
+
+    {{ include('travaux/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_travaux_index') }}">Précédent</a>
+
+    {{ include('travaux/_delete_form.html.twig') }}
+{% endblock %}

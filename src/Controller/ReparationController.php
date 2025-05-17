@@ -15,10 +15,22 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ReparationController extends AbstractController
 {
     #[Route(name: 'app_reparation_index', methods: ['GET'])]
-    public function index(ReparationRepository $reparationRepository): Response
+    public function index(Request $request, ReparationRepository $reparationRepository): Response
     {
+        $page = $request->query->getInt('page',1);
+        $search = $request->query->getString('search', '');
+        $limit = 10;
+
+        $paginator = $reparationRepository->findPaginated($search, $page, $limit);
+
+        $totalItems = count($paginator); 
+        $totalPages = ceil($totalItems/$limit);
+        
         return $this->render('reparation/index.html.twig', [
-            'reparations' => $reparationRepository->findAll(),
+            'reparations' => $paginator,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'search' => $search
         ]);
     }
 

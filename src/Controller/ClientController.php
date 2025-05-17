@@ -10,24 +10,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/client')]
 final class ClientController extends AbstractController
 {
     #[Route(name: 'app_client_index', methods: ['GET'])]
-    public function index(ClientRepository $clientRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(ClientRepository $clientRepository, Request $request): Response
     {
-        $query = $clientRepository->createQueryBuilder('c')->getQuery();
+        $page = $request->query->getInt('page', 1);
+        $search = $request->query->getString('search', '');
+        $limit = 10;
 
-        $pagination = $paginator->paginate(
-            $query, // Query ou tableau de données
-            $request->query->getInt('page', 1), // Page courante, par défaut 1
-            10 // Nombre d'éléments par page
-        );
+        $paginator = $clientRepository->findPaginated($search, $page, $limit);
+
+        $totalItems =  count($paginator);
+        $totalPages = ceil($totalItems / $limit);
 
         return $this->render('client/index.html.twig', [
-            'pagination' => $pagination,
+            'clients' => $paginator,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'search' => $search
         ]);
     }
 
@@ -57,6 +60,7 @@ final class ClientController extends AbstractController
     {
         return $this->render('client/show.html.twig', [
             'client' => $client,
+            'vehicules' => $client->getVehicules()
         ]);
     }
 
@@ -78,13 +82,13 @@ final class ClientController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_client_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_client_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->getPayload()->getString('_token'))) {
+        //if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($client);
             $entityManager->flush();
-        }
+       // }
 
         return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
     }

@@ -1,10 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}TacheReparation index{% endblock %}
+{% block title %}Garage manager - Réparation{% endblock %}
 
 {% block body %}
-    <h1>TacheReparation index</h1>
-
+    <div class="">
+        <h1>Réparations<h1>
+        <a href="{{ path('app_tache_reparation_new') }}">Nouvelle tachê</a>
+    </div>
+    
     <table class="table">
         <thead>
             <tr>
@@ -25,17 +28,16 @@
                 <td>{{ tache_reparation.dateDebut ? tache_reparation.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ tache_reparation.dateFin ? tache_reparation.dateFin|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_tache_reparation_show', {'id': tache_reparation.id}) }}">show</a>
-                    <a href="{{ path('app_tache_reparation_edit', {'id': tache_reparation.id}) }}">edit</a>
+                    <a href="{{ path('app_tache_reparation_show', {'id': tache_reparation.id}) }}"><i class="bi bi-eye-fill"></i></a>
+                    <a href="{{ path('app_tache_reparation_edit', {'id': tache_reparation.id}) }}"><i class="bi bi-pencil-square"></i></a>
+                    <a href="{{ path('app_tache_reparation_delete', {'id': tache_reparation.id}) }}"><i class="bi bi-trash"></i></a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Aucun enregistrement</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_tache_reparation_new') }}">Create new</a>
 {% endblock %}

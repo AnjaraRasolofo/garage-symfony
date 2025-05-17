@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Garage manager - Nouvelle tache{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une nouvelle tâche</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+        <div class="d-flex mt-3">
+            <a href="{{ path('app_travaux_index') }}" class="btn btn-secondary mx-1">Précédent</a>
+            <button class="btn btn-primary">Ajouter</button>
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vehicule{% endblock %}
+{% block title %}GM | Véhicule{% endblock %}
 
 {% block body %}
-    <h1>Vehicule</h1>
+    <h1>Véhicule</h1>
 
     <table class="table">
         <tbody>
@@ -33,10 +33,43 @@
             </tr>
         </tbody>
     </table>
+    <div class="d-flex">
 
-    <a href="{{ path('app_vehicule_index') }}">back to list</a>
+        <a href="{{ path('app_vehicule_index') }}" class="btn btn-secondary">Précedent</a>
 
-    <a href="{{ path('app_vehicule_edit', {'id': vehicule.id}) }}">edit</a>
+        <a href="{{ path('app_vehicule_edit', {'id': vehicule.id}) }}" class="btn btn-primary mx-2">Modifier</a>
 
-    {{ include('vehicule/_delete_form.html.twig') }}
+        <form method="post" action="{{ path('app_vehicule_delete', {'id': vehicule.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vehicule.id) }}">
+            <button class="btn btn-danger">Supprimer</button>
+        </form>
+
+    </div>
+
+    <h3 class="mt-4">Réparations effectuées</h3>
+    {% if reparations|length > 0 %}
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Intitulé</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reparation in reparations %}
+                    <tr>
+                        <td>{{ reparation.dateReparation|date('d/m/Y') }}</td>
+                        <td>{{ reparation.description }}</td>
+                        <td>{{ reparation.status }}</td>
+                        <td><a href="{{ path('app_reparation_show', {'id': reparation.id}) }}" class="btn btn-sm btn-outline-secondary">👁️</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune réparation enregistrée pour ce véhicule.</p>
+    {% endif %}
+
 {% endblock %}

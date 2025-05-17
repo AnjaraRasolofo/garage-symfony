@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\VehiculeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Client;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: VehiculeRepository::class)]
 class Vehicule
@@ -31,6 +33,14 @@ class Vehicule
 
     #[ORM\ManyToOne(inversedBy: 'vehicules')]
     private ?client $client = null;
+
+    #[ORM\OneToMany(mappedBy: 'vehicule', targetEntity: Reparation::class)]
+    private Collection $reparations;
+
+    public function __construct()
+    {
+        $this->reparations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,5 +117,10 @@ class Vehicule
         $this->client = $client;
 
         return $this;
+    }
+
+    public function getReparations(): Collection
+    {
+        return $this->reparations;
     }
 }

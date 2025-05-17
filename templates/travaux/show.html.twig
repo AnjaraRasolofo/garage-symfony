@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Travaux{% endblock %}
+
+{% block body %}
+    <h1>Travaux</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ travaux.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ travaux.nom }}</td>
+            </tr>
+            <tr>
+                <th>Categorie</th>
+                <td>{{ travaux.categorie }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_travaux_index') }}">Precédent</a>
+
+    <a href="{{ path('app_travaux_edit', {'id': travaux.id}) }}">Modifier</a>
+
+    {{ include('travaux/_delete_form.html.twig') }}
+{% endblock %}

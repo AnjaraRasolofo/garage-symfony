@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Reparation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Reparation>
@@ -16,28 +17,21 @@ class ReparationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reparation::class);
     }
 
-    //    /**
-    //     * @return Reparation[] Returns an array of Reparation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findPaginated(String $search = '', int $page = 1, int $limit = 10): Paginator {
+        
+        $query = $this->createQueryBuilder('r');
 
-    //    public function findOneBySomeField($value): ?Reparation
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if(!empty($search)){
+            $query->where('r.description LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        $query->orderBy('r.id', 'ASC')
+            ->setFirstResult(($page -1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery();
+        
+        return new Paginator($query);
+    }
+
 }

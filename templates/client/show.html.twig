@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client{% endblock %}
+{% block title %}GM | Client{% endblock %}
 
 {% block body %}
     <h1>Client</h1>
@@ -34,9 +34,44 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_client_index') }}" class="btn btn-secondary">back to list</a>
+    <div class="d-flex">
+        <a href="{{ path('app_client_index') }}" class="btn btn-secondary">Précedent</a>
 
-    <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="btn btn-primary">edit</a>
+        <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="btn btn-primary mx-2">Modifier</a>
 
-    {{ include('client/_delete_form.html.twig') }}
+        <form method="post" action="{{ path('app_client_delete', {'id': client.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+            <button class="btn btn-danger">Supprimer</button>
+        </form>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped align-middle mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Modele</th>
+                <th>Immatriculation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicule in vehicules %}
+            <tr>
+                <td>{{ vehicule.id }}</td>
+                <td>{{ vehicule.marque }} {{ vehicule.modele }}</td>
+                <td>{{ vehicule.immatriculation }}</td>
+                <td>
+                    <a href="{{ path('app_vehicule_show', {'id': vehicule.id}) }}" class="btn btn-outline-secondary"><i class="bi bi-eye-fill"></i></a>
+                    <a href="{{ path('app_vehicule_edit', {'id': vehicule.id}) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil-square"></i></a>
+                    <a href="{{ path('app_vehicule_delete', {'id': vehicule.id}) }}" class="btn btn-outline-secondary"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun véhicule enregistré</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

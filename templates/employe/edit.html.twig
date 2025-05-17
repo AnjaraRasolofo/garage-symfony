@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un employé{% endblock %}
+{% block title %}GM | Employé{% endblock %}
 
 {% block body %}
-<div class="container my-5">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-9">
             <div class="card shadow-sm rounded-4 border-0">
                 <div class="card-body p-4">
-                    <h2 class="mb-4 text-center text-primary">🧑‍🔧 Nouvel employé</h2>
+                    <h2 class="mb-4">Employé</h2>
 
                     {{ form_start(form, {'attr': {'class': 'row g-4'}}) }}
 
@@ -48,12 +48,6 @@
                         {{ form_errors(form.date_embauche) }}
                     </div>
 
-                    <div class="col-md-3">
-                        {{ form_label(form.salaire) }}
-                        {{ form_widget(form.salaire, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(form.salaire) }}
-                    </div>
-
                     <div class="col-md-9">
                         {{ form_label(form.adresse) }}
                         {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
@@ -68,10 +62,15 @@
                         </div>
                     </div>
 
-                    <div class="col-12 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success px-4">💾 Enregistrer</button>
+                    <div class="col-12 d-flex">
+                        <a href="{{ path('app_employe_index') }}" class="btn btn-secondary">Précedent</a>
+                        <button type="submit" class="btn btn-primary mx-2">Enregistrer</button>
+                        <form method="post" action="{{ path('app_employe_delete', {'id': employe.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ employe.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
                     </div>
-
+                    
                     {{ form_end(form) }}
                 </div>
             </div>

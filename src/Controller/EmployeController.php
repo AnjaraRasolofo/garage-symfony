@@ -16,18 +16,21 @@ use Knp\Component\Pager\PaginatorInterface;
 final class EmployeController extends AbstractController
 {
     #[Route(name: 'app_employe_index', methods: ['GET'])]
-    public function index(EmployeRepository $employeRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(EmployeRepository $employeRepository, Request $request): Response
     {
-        $query = $employeRepository->createQueryBuilder('c')->getQuery();
+        $page = $request->query->getInt('page', 1);
+        $search = $request->query->getString('search','');
+        $limit = 10;
 
-        $pagination = $paginator->paginate(
-            $query, // Query ou tableau de données
-            $request->query->getInt('page', 1), // Page courante, par défaut 1
-            10 // Nombre d'éléments par page
-        );
+        $paginator = $employeRepository->findPaginated($search, $page, $limit);
+        $totalItems = count($paginator);
+        $totalPages = ceil($totalItems / $limit);
 
         return $this->render('employe/index.html.twig', [
-            'pagination' => $pagination,
+            'employes' => $paginator,
+            'search' => $search,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
         ]);
     }
 
@@ -77,13 +80,13 @@ final class EmployeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_employe_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_employe_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Employe $employe, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$employe->getId(), $request->getPayload()->getString('_token'))) {
+        //if ($this->isCsrfTokenValid('delete'.$employe->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($employe);
             $entityManager->flush();
-        }
+        //}
 
         return $this->redirectToRoute('app_employe_index', [], Response::HTTP_SEE_OTHER);
     }

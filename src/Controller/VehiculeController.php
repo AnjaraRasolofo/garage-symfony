@@ -15,11 +15,25 @@ use Symfony\Component\Routing\Attribute\Route;
 final class VehiculeController extends AbstractController
 {
     #[Route(name: 'app_vehicule_index', methods: ['GET'])]
-    public function index(VehiculeRepository $vehiculeRepository): Response
+    public function index(Request $request, VehiculeRepository $vehiculeRepository): Response
     {
+        
+        $page = max(1,$request->query->getInt('page', 1));
+        $search = $request->query->getString('search', '');
+        $limit = 10;
+
+        $paginator = $vehiculeRepository->findPaginatedByCriteria($search, $page, $limit);
+        $totalItems = count($paginator);
+        $totalPages = ceil($totalItems / $limit);
+
+
         return $this->render('vehicule/index.html.twig', [
-            'vehicules' => $vehiculeRepository->findAll(),
+            'vehicules' => $paginator,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'search' => $search 
         ]);
+
     }
 
     #[Route('/new', name: 'app_vehicule_new', methods: ['GET', 'POST'])]
@@ -47,6 +61,7 @@ final class VehiculeController extends AbstractController
     {
         return $this->render('vehicule/show.html.twig', [
             'vehicule' => $vehicule,
+            'reparations' => $vehicule->getReparations()
         ]);
     }
 
@@ -68,13 +83,15 @@ final class VehiculeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_vehicule_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_vehicule_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Vehicule $vehicule, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->getPayload()->getString('_token'))) {
+        $entityManager->remove($vehicule);
+        $entityManager->flush();
+        /*if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($vehicule);
             $entityManager->flush();
-        }
+        }*/
 
         return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
     }

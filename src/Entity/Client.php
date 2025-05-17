@@ -36,7 +36,7 @@ class Client
     /**
      * @var Collection<int, Vehicule>
      */
-    #[ORM\OneToMany(targetEntity: Vehicule::class, mappedBy: 'Client')]
+    #[ORM\OneToMany(targetEntity: Vehicule::class, mappedBy: 'client', cascade: ['persist', 'remove'])]
     private Collection $vehicules;
 
     public function __construct()
