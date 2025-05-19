@@ -35,4 +35,23 @@ class EmployeRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+    // src/Repository/EmployeRepository.php
+    public function countDisponibles(): int
+    {
+        $sub = $this->_em->createQueryBuilder()
+            ->select('e2.id')
+            ->from('App\Entity\Employe', 'e2')
+            ->innerJoin('e2.reparations', 'r2')
+            ->where('r2.status = :status')
+            ->getDQL();
+
+        return $this->createQueryBuilder('e')
+            ->select('COUNT(e.id)')
+            ->where("e.id NOT IN ($sub)")
+            ->setParameter('status', 'en_cours')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
 }

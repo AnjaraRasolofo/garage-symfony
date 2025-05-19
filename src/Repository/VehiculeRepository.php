@@ -46,4 +46,17 @@ class VehiculeRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+    // src/Repository/VehiculeRepository.php
+    public function countRepares(): int
+    {
+        return $this->createQueryBuilder('v')
+            ->join('v.reparations', 'r')
+            ->andWhere('r.status = :status')
+            ->setParameter('status', 'terminée')
+            ->select('COUNT(DISTINCT v.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
 }

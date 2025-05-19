@@ -1,7 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page d\'accueil{% endblock %}
+{% block title %}Garage Manager | Dashboard{% endblock %}
 
 {% block body %}
-    Garage Manager
+<div class="container mt-4">
+    <h1 class="mb-4">Garage Manager</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Véhicules réparés</div>
+                <div class="card-body">
+                    {#<h5 class="card-title">{{ vehiculesRepares }}</h5>#}
+                    <h5 class="card-title">{{ 200 }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Réparations</div>
+                <div class="card-body">
+                    {#<h5 class="card-title">{{ nombreReparations }}</h5>#}
+                    <h5 class="card-title">{{ 10 }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Mécaniciens disponibles</div>
+                <div class="card-body">
+                    {#<h5 class="card-title">{{ mecaniciensDisponibles }}</h5>#}
+                    <h5 class="card-title">{{ 10 }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Factures en cours</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ facturesEnCours }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
